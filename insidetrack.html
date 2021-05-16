@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="shortcut icon" type=image/png href=images/favicon.png>
+
+    <!-- meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- external scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <!-- internal scripts -->
+    <script type=text/javascript src=inside_track.js></script>
+
+    <style>
+      .odds {
+        max-width: 250px;
+      }
+
+      .row {
+        margin-bottom: 2px;
+      }
+
+      .container {
+        background-color:#222321;
+        color: white;
+        margin: 20px;
+        padding: 20px;
+        border-radius: 15px;
+      }
+
+      .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      .description {
+        padding: 10px 0px 25px 0px;
+      }
+
+      .footer {
+        padding: 10px 0px 0px 0px;
+      }
+    </style>
+
+    <title>Inside Track: True Odds Calculator</title>
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="row titleimg">
+        <img src="images/logo.png" class="center" alt="Inside Track Logo">
+      </div>
+
+      <div class="row description center">
+        <h2>Enter the odds for all six horses</h2>
+        <h4>For EVENS put 1/1</h4>
+        <br />
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+
+          <div class="form-group row">
+            <div class="col-xs-6">
+              <div class="input-group input-group-lg">
+                <input class="form-control odds" id="horse1" type="text" aria-describedby="basic-addon2">
+                <span class="input-group-addon" id="basic-addon2">/1</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-xs-6">
+              <div class="input-group input-group-lg">
+                <input class="form-control odds" id="horse2" type="text" aria-describedby="basic-addon2">
+                <span class="input-group-addon" id="basic-addon2">/1</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-xs-6">
+              <div class="input-group input-group-lg">
+                <input class="form-control odds" id="horse3" type="text" aria-describedby="basic-addon2">
+                <span class="input-group-addon" id="basic-addon2">/1</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-xs-6">
+              <div class="input-group input-group-lg">
+                <input class="form-control odds" id="horse4" type="text" aria-describedby="basic-addon2">
+                <span class="input-group-addon" id="basic-addon2">/1</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group row">
+            <div class="col-xs-6">
+              <div class="input-group input-group-lg">
+                <input class="form-control odds" id="horse5" type="text" aria-describedby="basic-addon2">
+                <span class="input-group-addon" id="basic-addon2">/1</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-xs-6">
+              <div class="input-group input-group-lg">
+                <input class="form-control odds" id="horse6" type="text" aria-describedby="basic-addon2">
+                <span class="input-group-addon" id="basic-addon2">/1</span>
+              </div>
+            </div>
+          </div>
+          
+          <button type="button" class="btn btn-success btn-lg" id="calculate">Calculate</button>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group row">
+            <div id="output">
+              <h3>
+                True Odds:
+                <span id="output_display"></span>
+              </h3>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row center footer">
+        <p>Description on how this works and code can be found on GitHub 
+          <a href="" target="_blank"><img style="max-width:24px;padding-left:2px;" src="images/GitHub-Mark-Light-32px.png" alt="GitHub link for Inside Track: True Odds Calculator code"></a>
+        </p>
+      </div>
+    </div>
+
+
+    <script>
+      $(document).ready(function(){
+        const maxHorses = 6;
+
+        $("#calculate").click(function(){
+            //Check we have odds for all 6 horses
+            let odds = [];
+            let inputs = $(".odds");
+
+            $.each(inputs, (i, input) => {
+              if(input.value && !isNaN(input.value)) {
+                odds.push(parseInt(input.value));
+              }
+            });
+
+            if(odds.length == maxHorses){
+              const race = new Race();
+              odds.sort((a, b) => a - b);
+
+              for(let i=0; i < maxHorses; i++){
+                const o = odds[i];
+                const h = new Horse(o,1);
+                race.addHorse(h);
+              }
+
+              race.calculateOdds();
+              const summary = race.summary();
+
+              $("#output_display").html(summary.join("<br />"));
+            }
+            else alert("Incorrect or missing odds");
+        }); 
+
+      });
+    </script>
+  </body>
+</html>
