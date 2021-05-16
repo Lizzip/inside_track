@@ -42,7 +42,7 @@
       }
 
       .description {
-        padding: 10px 0px 25px 0px;
+        padding: 20px 0px 20px 0px;
       }
 
       .footer {
@@ -60,80 +60,76 @@
       </div>
 
       <div class="row description center">
-        <h2>Enter the odds for all six horses</h2>
-        <h4>For EVENS put 1/1</h4>
-        <br />
+        <p>Enter the odds for all six horses then hit Calculate. For EVENS put 1/1</p>
+        <p>Bet high on green, bet low on red</p>
       </div>
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12 center">
 
           <div class="form-group row">
             <div class="col-xs-6">
-              <div class="input-group input-group-lg">
-                <input class="form-control odds" id="horse1" type="text" aria-describedby="basic-addon2">
+              <div class="input-group input-group-lg odds" style="float:right;">
+                <input class="form-control oddsInput" id="horse1" type="text" aria-describedby="basic-addon2">
                 <span class="input-group-addon" id="basic-addon2">/1</span>
               </div>
             </div>
+            <div class="col-xs-6" id="summary1" style="text-align: left;"></div>
           </div>
 
           <div class="form-group row">
             <div class="col-xs-6">
-              <div class="input-group input-group-lg">
-                <input class="form-control odds" id="horse2" type="text" aria-describedby="basic-addon2">
+              <div class="input-group input-group-lg odds" style="float:right;">
+                <input class="form-control oddsInput" id="horse2" type="text" aria-describedby="basic-addon2">
                 <span class="input-group-addon" id="basic-addon2">/1</span>
               </div>
             </div>
+            <div class="col-xs-6" id="summary2" style="text-align: left;"></div>
           </div>
 
           <div class="form-group row">
             <div class="col-xs-6">
-              <div class="input-group input-group-lg">
-                <input class="form-control odds" id="horse3" type="text" aria-describedby="basic-addon2">
+              <div class="input-group input-group-lg odds" style="float:right;">
+                <input class="form-control oddsInput" id="horse3" type="text" aria-describedby="basic-addon2">
                 <span class="input-group-addon" id="basic-addon2">/1</span>
               </div>
             </div>
+            <div class="col-xs-6" id="summary3" style="text-align: left;"></div>
           </div>
 
           <div class="form-group row">
             <div class="col-xs-6">
-              <div class="input-group input-group-lg">
-                <input class="form-control odds" id="horse4" type="text" aria-describedby="basic-addon2">
+              <div class="input-group input-group-lg odds" style="float:right;">
+                <input class="form-control oddsInput" id="horse4" type="text" aria-describedby="basic-addon2">
                 <span class="input-group-addon" id="basic-addon2">/1</span>
               </div>
             </div>
+            <div class="col-xs-6" id="summary4" style="text-align: left;"></div>
           </div>
           
           <div class="form-group row">
             <div class="col-xs-6">
-              <div class="input-group input-group-lg">
-                <input class="form-control odds" id="horse5" type="text" aria-describedby="basic-addon2">
+              <div class="input-group input-group-lg odds" style="float:right;">
+                <input class="form-control oddsInput" id="horse5" type="text" aria-describedby="basic-addon2">
                 <span class="input-group-addon" id="basic-addon2">/1</span>
               </div>
             </div>
+            <div class="col-xs-6" id="summary5" style="text-align: left;"></div>
           </div>
 
           <div class="form-group row">
             <div class="col-xs-6">
-              <div class="input-group input-group-lg">
-                <input class="form-control odds" id="horse6" type="text" aria-describedby="basic-addon2">
+              <div class="input-group input-group-lg odds" style="float:right;">
+                <input class="form-control oddsInput" id="horse6" type="text" aria-describedby="basic-addon2">
                 <span class="input-group-addon" id="basic-addon2">/1</span>
               </div>
             </div>
+            <div class="col-xs-6" id="summary6" style="text-align: left;"></div>
           </div>
           
+          <br />
           <button type="button" class="btn btn-success btn-lg" id="calculate">Calculate</button>
-        </div>
 
-        <div class="col-md-6">
-          <div class="form-group row">
-            <div id="output">
-              <h3>
-                True Odds:
-                <span id="output_display"></span>
-              </h3>
-            </div>
-          </div>
         </div>
 
       </div>
@@ -153,7 +149,7 @@
         $("#calculate").click(function(){
             //Check we have odds for all 6 horses
             let odds = [];
-            let inputs = $(".odds");
+            let inputs = $(".oddsInput");
 
             $.each(inputs, (i, input) => {
               if(input.value && !isNaN(input.value)) {
@@ -163,7 +159,6 @@
 
             if(odds.length == maxHorses){
               const race = new Race();
-              odds.sort((a, b) => a - b);
 
               for(let i=0; i < maxHorses; i++){
                 const o = odds[i];
@@ -174,7 +169,17 @@
               race.calculateOdds();
               const summary = race.summary();
 
-              $("#output_display").html(summary.join("<br />"));
+              for(let i = 0; i < summary.length; i++){
+                const percentage = parseFloat(summary[i][0].toFixed(2));
+                const truePercentage = parseFloat(summary[i][1].toFixed(2));
+
+                if(truePercentage > percentage){
+                  $(`#summary${i+1}`).html(`<h4 class="text-success" style="font-weight:bold;margin-bottom:0px;">${truePercentage}%</h4>`);
+                }
+                else {
+                  $(`#summary${i+1}`).html(`<h4 class="text-danger" style="font-weight:bold;margin-bottom:0px;">${truePercentage}%</h4>`);
+                }
+              }
             }
             else alert("Incorrect or missing odds");
         }); 

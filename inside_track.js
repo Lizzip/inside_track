@@ -17,7 +17,7 @@ class Race {
         for(let i=0; i < this.horses.length; i++){
           const oddsPercentage = this.horses[i].getOddsPercentage();
           const actualPercentage = (oddsPercentage/totalPercent) * 100;
-          this.horses[i].setTruePercentage(actualPercentage);
+          this.horses[i].setTruePercentage(parseFloat(actualPercentage));
         }
       }
         
@@ -31,13 +31,9 @@ class Race {
       let summary = [];
 
       for(let i=0; i < this.horses.length; i++){
-        let textColour = "text-danger";
-        const fraction = this.horses[i].getOddsFraction();
         const percentage = this.horses[i].getOddsPercentage();
         const truePercentage = this.horses[i].getTruePercentage();
-
-        if(truePercentage > percentage) textColour = "text-success";
-        summary.push(`<p class="${textColour}" style="font-weight:bold;margin-bottom:0px;">${fraction}: ${truePercentage.toFixed(2)}%</p>`);
+        summary.push([percentage, truePercentage])
       }
 
       return summary;
