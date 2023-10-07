@@ -4,7 +4,7 @@ Calculate the actual odds of horses for Inside Track horse racing in the GTA Onl
 
 ## How To Use  
 Enter the odds for all 6 horses in the race and hit the Calculate button. If the true odds show in green then the odds are in your favour and you should bet larger amounts. If the true odds are in red then the odds are not in your favour and you should bet the minimum or not bet at all.  
-[The Inside Track: True Odds Calculator is hosted here](http://magicsheepgames.co.uk/insidetrack.html)  
+[The Inside Track: True Odds Calculator is hosted here](https://lizzip.net/insidetrack)  
 &nbsp;
 
 ## Fractional Odds Betting
